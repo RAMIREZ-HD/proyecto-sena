@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import 'home_screen.dart';
 import 'registro_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,13 +23,27 @@ class _LoginScreenState extends State<LoginScreen> {
       correo: correoController.text,
       password: passwordController.text,
     );
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool("logueado", true);
+    await prefs.setString("correo", correoController.text);
 
     if (respuesta["success"]) {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Guardar información del usuario
+      await prefs.setBool("logueado", true);
+      await prefs.setString("correo", correoController.text);
+
+      if (!mounted) return;
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } else {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(respuesta["message"])));

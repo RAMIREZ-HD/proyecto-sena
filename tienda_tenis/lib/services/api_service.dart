@@ -139,4 +139,55 @@ class ApiService {
 
     return jsonDecode(response.body);
   }
+  // ==========================
+  // AGREGAR AL CARRITO
+  // ==========================
+
+  Future<Map<String, dynamic>> agregarAlCarrito({
+    required int usuarioId,
+    required int productoId,
+    required int cantidad,
+  }) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/carrito/agregar.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "usuario_id": usuarioId,
+        "producto_id": productoId,
+        "cantidad": cantidad,
+      }),
+    );
+
+    return jsonDecode(response.body);
+  }
+
+  // ==========================
+  // LISTAR CARRITO
+  // ==========================
+
+  Future<List<dynamic>> obtenerCarrito(int usuarioId) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/carrito/listar.php?usuario_id=$usuarioId"),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+
+    throw Exception("Error al obtener carrito");
+  }
+
+  // ==========================
+  // ELIMINAR DEL CARRITO
+  // ==========================
+
+  Future<Map<String, dynamic>> eliminarDelCarrito(int id) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/carrito/eliminar.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"id": id}),
+    );
+
+    return jsonDecode(response.body);
+  }
 }

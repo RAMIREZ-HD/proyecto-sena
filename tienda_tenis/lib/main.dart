@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const TiendaTenisApp());
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final logueado = prefs.getBool("logueado") ?? false;
+
+  runApp(TiendaTenisApp(logueado: logueado));
 }
 
 class TiendaTenisApp extends StatelessWidget {
-  const TiendaTenisApp({super.key});
+  final bool logueado;
+
+  const TiendaTenisApp({super.key, required this.logueado});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,8 @@ class TiendaTenisApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tienda de Tenis',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LoginScreen(),
+
+      home: logueado ? const HomeScreen() : const LoginScreen(),
     );
   }
 }
