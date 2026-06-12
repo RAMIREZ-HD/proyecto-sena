@@ -22,7 +22,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
   static const Color primaryColor = Color(0xFF1A1A2E);
   static const Color accentColor = Color(0xFF00C9A7);
   static const Color cardBg = Color(0xFFF8F9FA);
-  static const Color priceColor = Color(0xFF00C9A7);
+  static const Color priceColor = Color.fromARGB(255, 18, 121, 104);
 
   @override
   void initState() {
